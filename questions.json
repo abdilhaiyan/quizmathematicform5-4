@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "type": "mcq",
+    "question": "Which of the following components is primarily responsible for temporary data storage while a computer is actively running tasks?",
+    "options": [
+      "Hard Disk Drive (HDD)",
+      "Random Access Memory (RAM)",
+      "Read-Only Memory (ROM)",
+      "Solid State Drive (SSD)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "RAM (Random Access Memory) acts as the computer's short-term memory ledger, holding active application data. Unlike HDDs or SSDs, it is volatile and clears completely when powered down."
+  },
+  {
+    "id": 2,
+    "type": "tf",
+    "question": "True or False: In double-entry bookkeeping, an increase in an asset account is recorded as a credit.",
+    "options": ["True", "False"],
+    "correctAnswer": 1,
+    "explanation": "False! In double-entry accounting, an increase in an asset account is always recorded as a debit, whereas a credit decreases it."
+  }
+]
