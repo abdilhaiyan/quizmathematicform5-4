@@ -81,7 +81,7 @@
     "id": 7,
     "type": "mcq",
     "question": "In Diagram 1, PQRST is a regular pentagon. RSU and RPV are straight lines. Find the value of x. / Dalam Rajah 1, PQRST ialah sebuah pentagon sekata. RSU dan RPV ialah garis lurus. Cari nilai x.",
-    "image": "images/diagram1.png",
+    {"image": "images/diagram1.png"},
     "options": [
       "36",
       "38",
