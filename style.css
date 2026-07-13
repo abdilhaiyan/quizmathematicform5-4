@@ -268,3 +268,40 @@ body {
 .option-btn.incorrect-choice .quiz-option-img {
     filter: brightness(0) invert(1);
 }
+
+/* Layout Alignment Rules for the Main Question Diagram */
+#question-image-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.quiz-question-img {
+    max-width: 100%;
+    max-height: 260px;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background-color: rgba(255, 255, 255, 0.01);
+}
+
+/* Layout Alignment Rules for Option Button Images */
+.quiz-option-img {
+    display: block;
+    max-width: 100%;
+    max-height: 110px;
+    height: auto;
+    margin: 0 auto;
+    pointer-events: none; 
+}
+
+/* Color adjustments for standard inverted UI image handling on interaction */
+.option-btn:hover .quiz-option-img {
+    filter: brightness(0) invert(1);
+}
+.option-btn.correct-choice .quiz-option-img,
+.option-btn.incorrect-choice .quiz-option-img {
+    filter: brightness(0) invert(1);
+}
