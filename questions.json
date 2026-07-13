@@ -187,10 +187,10 @@
     "type": "mcq",
     "question": "Which of the following represents the graph of y = sin x? / Antara berikut, yang manakah mewakili graf y = sin x?",
     "options": [
-      "image": "images/mcq1.png",
-      "image": "images/mcq2.png",
-      "image": "images/mcq3.png",
-      "image": "images/mcq4.png"
+      {"image": "images/mcq1.png"},
+      {"image": "images/mcq2.png"},
+      {"image": "images/mcq3.png"},
+      {"image": "images/mcq4.png"}
     ],
     "correctAnswer": 2,
     "explanation": "The standard sine wave graph starts at the origin (0,0), reaches its maximum at 90°, crosses the x-axis at 180°, and completes one full wave cycle at 360°."
