@@ -3,6 +3,7 @@
     "id": 1,
     "type": "mcq",
     "question": "Round off 0.023456 correct to three significant figures. / Bundarkan 0.023456 betul kepada tiga angka bererti.",
+    "image": "images/diagram1.png",
     "options": [
       "0.023",
       "0.0230",
