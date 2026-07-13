@@ -17,6 +17,7 @@ class QuizEngine {
             quizView: document.getElementById('quiz-view'),
             resultsView: document.getElementById('results-view'),
             questionText: document.getElementById('question-text'),
+            imageContainer: document.getElementById('question-image-container'), // UPDATED: Image target slot tracking
             optionsContainer: document.getElementById('options-container'),
             feedbackContainer: document.getElementById('feedback-container'),
             feedbackTitle: document.getElementById('feedback-title'),
@@ -67,20 +68,30 @@ class QuizEngine {
         this.isAnswered = false;
         this.dom.feedbackContainer.classList.add('hidden');
         this.dom.optionsContainer.innerHTML = '';
+        this.dom.imageContainer.innerHTML = ''; // Clear out the prior question's image layout frame
 
         const currentQ = this.questions[this.currentIndex];
 
-        // UI HTML/Text assignments - FIXED: Using innerHTML to parse <sup>/<sub> tags properly
+        // UI HTML/Text assignments
         this.dom.questionText.innerHTML = currentQ.question;
         this.dom.progressText.textContent = `Question ${this.currentIndex + 1} of ${this.questions.length}`;
         this.dom.progressBarFill.style.width = `${((this.currentIndex) / this.questions.length) * 100}%`;
         this.dom.liveScore.textContent = this.score;
 
+        // UPDATED: Conditional parsing step to extract image parameters from data structure safely
+        if (currentQ.image && currentQ.image.trim() !== "") {
+            const quizImage = document.createElement('img');
+            quizImage.src = currentQ.image;
+            quizImage.alt = `Diagram source reference for question ${currentQ.id}`;
+            quizImage.classList.add('quiz-question-img');
+            this.dom.imageContainer.appendChild(quizImage);
+        }
+
         // Build dynamic response elements mapping indices securely via attributes
         currentQ.options.forEach((option, index) => {
             const button = document.createElement('button');
             button.classList.add('option-btn');
-            button.innerHTML = option; // FIXED: Using innerHTML to parse subscripts/superscripts inside choices
+            button.innerHTML = option; 
             button.setAttribute('data-index', index);
             button.addEventListener('click', (e) => this.evaluateAnswer(e));
             this.dom.optionsContainer.appendChild(button);
@@ -114,7 +125,7 @@ class QuizEngine {
             this.dom.feedbackTitle.style.color = "var(--color-incorrect)";
         }
 
-        this.dom.explanationText.innerHTML = currentQ.explanation; // FIXED: Using innerHTML to parse explanation formulas
+        this.dom.explanationText.innerHTML = currentQ.explanation; 
         this.dom.feedbackContainer.classList.remove('hidden');
     }
 
