@@ -17,7 +17,7 @@ class QuizEngine {
             quizView: document.getElementById('quiz-view'),
             resultsView: document.getElementById('results-view'),
             questionText: document.getElementById('question-text'),
-            imageContainer: document.getElementById('question-image-container'), // UPDATED: Image target slot tracking
+            imageContainer: document.getElementById('question-image-container'), // RESTORED: Main question image target slot
             optionsContainer: document.getElementById('options-container'),
             feedbackContainer: document.getElementById('feedback-container'),
             feedbackTitle: document.getElementById('feedback-title'),
@@ -60,14 +60,14 @@ class QuizEngine {
         if (!Array.isArray(data) || data.length === 0) {
             throw new Error("The questions schema file is empty or malformed.");
         }
-        // Slice to max capacity constraints of exactly 20 units if needed
         return data.slice(0, 20);
     }
 
-   renderQuestion() {
+    renderQuestion() {
         this.isAnswered = false;
         this.dom.feedbackContainer.classList.add('hidden');
         this.dom.optionsContainer.innerHTML = '';
+        this.dom.imageContainer.innerHTML = ''; // Clear out the prior question's main diagram image
 
         const currentQ = this.questions[this.currentIndex];
 
@@ -77,14 +77,22 @@ class QuizEngine {
         this.dom.progressBarFill.style.width = `${((this.currentIndex) / this.questions.length) * 100}%`;
         this.dom.liveScore.textContent = this.score;
 
-        // Build dynamic response elements mapping indices securely via attributes
+        // FIXED FEATURE 1: Render the main question diagram if it exists in the JSON schema
+        if (currentQ.image && currentQ.image.trim() !== "") {
+            const quizImage = document.createElement('img');
+            quizImage.src = currentQ.image;
+            quizImage.alt = `Diagram source reference for question ${currentQ.id}`;
+            quizImage.classList.add('quiz-question-img');
+            this.dom.imageContainer.appendChild(quizImage);
+        }
+
+        // FIXED FEATURE 2: Build dynamic response buttons (supporting both image objects and text strings)
         currentQ.options.forEach((option, index) => {
             const button = document.createElement('button');
             button.classList.add('option-btn');
             button.setAttribute('data-index', index);
             button.addEventListener('click', (e) => this.evaluateAnswer(e));
 
-            // DYNAMIC FIX: Check if the option is a structural image object or text string
             if (typeof option === 'object' && option !== null && option.image) {
                 const img = document.createElement('img');
                 img.src = option.image;
@@ -92,7 +100,7 @@ class QuizEngine {
                 img.classList.add('quiz-option-img');
                 button.appendChild(img);
             } else {
-                button.innerHTML = option; // Fallback to normal text/HTML handling
+                button.innerHTML = option;
             }
 
             this.dom.optionsContainer.appendChild(button);
@@ -100,7 +108,7 @@ class QuizEngine {
     }
 
     evaluateAnswer(event) {
-        if (this.isAnswered) return; // Hard input lockout sequence triggered
+        if (this.isAnswered) return; 
         this.isAnswered = true;
 
         const selectedButton = event.currentTarget;
@@ -118,7 +126,6 @@ class QuizEngine {
             this.dom.feedbackTitle.style.color = "var(--color-correct)";
         } else {
             selectedButton.classList.add('incorrect-choice');
-            // Trace and emphasize the actual objective correction matching state data
             const correctBtn = this.dom.optionsContainer.querySelector(`[data-index="${currentQ.correctAnswer}"]`);
             if (correctBtn) correctBtn.classList.add('correct-choice');
             
@@ -146,7 +153,6 @@ class QuizEngine {
         this.dom.progressBarFill.style.width = '100%';
         this.dom.finalScore.textContent = this.score;
 
-        // Evaluate dynamic feedback benchmarks
         const percentage = (this.score / this.questions.length) * 100;
         if (percentage >= 80) {
             this.dom.performanceSummary.textContent = "Exceptional result! Outstanding execution and accuracy.";
@@ -158,7 +164,6 @@ class QuizEngine {
     }
 }
 
-// Instantiate engine components securely upon DOM processing conclusion
 document.addEventListener('DOMContentLoaded', () => {
     new QuizEngine();
 });
