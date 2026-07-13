@@ -70,8 +70,8 @@ class QuizEngine {
 
         const currentQ = this.questions[this.currentIndex];
 
-        // UI Text assignments
-        this.dom.questionText.textContent = currentQ.question;
+        // UI HTML/Text assignments - FIXED: Using innerHTML to parse <sup>/<sub> tags properly
+        this.dom.questionText.innerHTML = currentQ.question;
         this.dom.progressText.textContent = `Question ${this.currentIndex + 1} of ${this.questions.length}`;
         this.dom.progressBarFill.style.width = `${((this.currentIndex) / this.questions.length) * 100}%`;
         this.dom.liveScore.textContent = this.score;
@@ -80,7 +80,7 @@ class QuizEngine {
         currentQ.options.forEach((option, index) => {
             const button = document.createElement('button');
             button.classList.add('option-btn');
-            button.textContent = option;
+            button.innerHTML = option; // FIXED: Using innerHTML to parse subscripts/superscripts inside choices
             button.setAttribute('data-index', index);
             button.addEventListener('click', (e) => this.evaluateAnswer(e));
             this.dom.optionsContainer.appendChild(button);
@@ -114,7 +114,7 @@ class QuizEngine {
             this.dom.feedbackTitle.style.color = "var(--color-incorrect)";
         }
 
-        this.dom.explanationText.textContent = currentQ.explanation;
+        this.dom.explanationText.innerHTML = currentQ.explanation; // FIXED: Using innerHTML to parse explanation formulas
         this.dom.feedbackContainer.classList.remove('hidden');
     }
 
