@@ -64,11 +64,10 @@ class QuizEngine {
         return data.slice(0, 20);
     }
 
-    renderQuestion() {
+   renderQuestion() {
         this.isAnswered = false;
         this.dom.feedbackContainer.classList.add('hidden');
         this.dom.optionsContainer.innerHTML = '';
-        this.dom.imageContainer.innerHTML = ''; // Clear out the prior question's image layout frame
 
         const currentQ = this.questions[this.currentIndex];
 
@@ -78,22 +77,24 @@ class QuizEngine {
         this.dom.progressBarFill.style.width = `${((this.currentIndex) / this.questions.length) * 100}%`;
         this.dom.liveScore.textContent = this.score;
 
-        // UPDATED: Conditional parsing step to extract image parameters from data structure safely
-        if (currentQ.image && currentQ.image.trim() !== "") {
-            const quizImage = document.createElement('img');
-            quizImage.src = currentQ.image;
-            quizImage.alt = `Diagram source reference for question ${currentQ.id}`;
-            quizImage.classList.add('quiz-question-img');
-            this.dom.imageContainer.appendChild(quizImage);
-        }
-
         // Build dynamic response elements mapping indices securely via attributes
         currentQ.options.forEach((option, index) => {
             const button = document.createElement('button');
             button.classList.add('option-btn');
-            button.innerHTML = option; 
             button.setAttribute('data-index', index);
             button.addEventListener('click', (e) => this.evaluateAnswer(e));
+
+            // DYNAMIC FIX: Check if the option is a structural image object or text string
+            if (typeof option === 'object' && option !== null && option.image) {
+                const img = document.createElement('img');
+                img.src = option.image;
+                img.alt = `Option ${String.fromCharCode(65 + index)}`;
+                img.classList.add('quiz-option-img');
+                button.appendChild(img);
+            } else {
+                button.innerHTML = option; // Fallback to normal text/HTML handling
+            }
+
             this.dom.optionsContainer.appendChild(button);
         });
     }
