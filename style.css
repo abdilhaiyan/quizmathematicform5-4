@@ -249,3 +249,22 @@ body {
     border: 1px solid var(--border-color);
     background-color: rgba(255, 255, 255, 0.02);
 }
+
+/* Responsive Answer Option Image Rules */
+.quiz-option-img {
+    display: block;
+    max-width: 100%;
+    max-height: 120px;
+    height: auto;
+    margin: 0 auto;
+    pointer-events: none; /* Prevents image click interfering with button targeting */
+}
+
+/* Optional: Inverts colors slightly if using dark mode theme styling rules */
+.option-btn:hover .quiz-option-img {
+    filter: brightness(0) invert(1);
+}
+.option-btn.correct-choice .quiz-option-img,
+.option-btn.incorrect-choice .quiz-option-img {
+    filter: brightness(0) invert(1);
+}
